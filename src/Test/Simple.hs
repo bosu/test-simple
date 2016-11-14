@@ -228,14 +228,14 @@ instance Testable (TestSimpleT (PropertyM IO) a) where
         assert b
 
 -- | Run some 'Testable' monad through 'QuickCheck' function. Exit with failure on error.
-qcTestSimpleWith :: (Testable (m a), Monad m) => (m a -> IO Q.Result) -> m a -> IO ()
+qcTestSimpleWith :: (m a -> IO Q.Result) -> m a -> IO ()
 qcTestSimpleWith qc m = do
     res <- qc m
     unless (isSuccess res) exitFailure
 
 -- | Run some 'Testable' monad through 'QuickCheck'. Exit with failure on error.
 -- Equivalent to 'qcTestSimpleWith' 'quickCheckResult'
-qcTestSimpleMain :: (Testable (m a), Monad m) => m a -> IO ()
+qcTestSimpleMain :: (Testable (m a)) => m a -> IO ()
 qcTestSimpleMain = qcTestSimpleWith quickCheckResult
 
 -- | Generates and logs (through 'diag') arbitrary value. Also outputs current location.
